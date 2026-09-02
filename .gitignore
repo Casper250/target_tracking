@@ -1,0 +1,22 @@
+# CMake
+build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Generated data
+# Uncomment if your generated data becomes large
+# data/*.csv
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
