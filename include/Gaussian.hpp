@@ -8,4 +8,12 @@ class Gaussian
 public:
     Eigen::VectorXd mean; 
     Eigen::MatrixXd cov;
+
+    Gaussian(const Eigen::VectorXd& inp_mean, const Eigen::MatrixXd& inp_cov);
+
+    double mahalanobis(const Eigen::VectorXd& x);
+
+    Gaussian linearTransformation(const Eigen::MatrixXd& L);
+
+
 };

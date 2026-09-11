@@ -9,8 +9,13 @@ find_package(Eigen3 REQUIRED)
 
 add_executable(calculation
     src/main.cpp
+    src/Gaussian.cpp
 )
 
 target_link_libraries(
     calculation PRIVATE Eigen3::Eigen
+)
+
+target_include_directories(calculation PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
