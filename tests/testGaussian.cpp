@@ -1,5 +1,6 @@
 #include "Gaussian.hpp"
-
+#include <iostream>
+#include <fstream>
 
 void testMahalanobis()
 {
@@ -79,4 +80,31 @@ void testLinearTransformation()
         std::cout << "Test 1 : linear transformation covariance failed :(" << std::endl; 
     }
 
+}
+
+void testSample()
+{
+    // Samples a bunch of points to be plotted in Python. Does not validate the function here
+
+    std::ofstream outFile; 
+    outFile.open("data/results.csv");
+    int nSamples = 100; 
+
+    Eigen::VectorXd mean1(2);
+    Eigen::MatrixXd cov1(2, 2);
+    Eigen::VectorXd sample(2);
+    mean1 << 1.0, 2.0;
+    cov1 << 1.0, 0.5,
+             0.5, 1.0;
+
+    Gaussian gauss1(mean1, cov1);
+
+
+    for (int i = 0; i < nSamples; ++i)
+    {
+        sample = gauss1.sample(); 
+        outFile << sample[0] << ", " << sample[1] << ", \n";
+    }
+
+    outFile.close();
 }

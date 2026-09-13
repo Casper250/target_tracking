@@ -11,21 +11,21 @@ Gaussian::Gaussian(const Eigen::VectorXd& inp_mean, const Eigen::MatrixXd& inp_c
 }
 
 
-double Gaussian::mahalanobis(const Eigen::VectorXd& x)
+double Gaussian::mahalanobis(const Eigen::VectorXd& x) const
 {
     //Return the mahalanobis distance squared
     return (x-mean).transpose()*cov.inverse()*(x -mean);
 }
 
 
-Gaussian Gaussian::linearTransformation(const Eigen::MatrixXd& L)
+Gaussian Gaussian::linearTransformation(const Eigen::MatrixXd& L) const
 {
     Gaussian transformedGaussian(L * mean, L * cov * L.transpose());    
     return transformedGaussian;
 }
 
 
-Eigen::VectorXd Gaussian::sample()
+Eigen::VectorXd Gaussian::sample() const
 {
     Eigen::LLT<Eigen::MatrixXd> llt(cov);
     if (llt.info() != Eigen::Success)

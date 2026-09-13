@@ -10,6 +10,8 @@ find_package(Eigen3 REQUIRED)
 add_executable(calculation
     src/main.cpp
     src/Gaussian.cpp
+    src/DynMod.cpp
+    src/SenMod.cpp
 )
 
 target_link_libraries(
