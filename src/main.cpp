@@ -5,6 +5,7 @@
 #include "../tests/testGaussian.cpp"
 #include "../tests/testDynMod.cpp"
 #include "../tests/testSenMod.cpp"
+#include "../tests/testTarget.cpp"
 
 int main()
 {    
@@ -15,7 +16,9 @@ int main()
      //testSample();
      //testLinearSystem();
      //testNonLinearSystem();
-     testLinearSensor();
-     testNonLinearSensor();
+     //testLinearSensor();
+     //testNonLinearSensor();
+     testFunctionAdvanceMotion();
+
      return 0;
 } 

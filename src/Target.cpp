@@ -2,7 +2,7 @@
 
 
 Target::Target(MotionFunction motionFunction, double deltaT, double t0)
-: positionFunction(stateFunction), 
+: stateFunction(motionFunction), 
   timeStep(deltaT),
   t(t0), 
   targetType(TargetType::Function),
@@ -18,8 +18,8 @@ Target::Target(const std::string& filename,  double deltaT, double t0)
   t(t0),
   targetType(TargetType::Samples)
 {
-    std::ifstream = file; //We wait with this
-    std::string line; 
+    //std::ifstream = file; //We wait with this
+    //std::string line; 
 }
 
 //Dynamic Model
@@ -27,20 +27,20 @@ Target::Target(DynMod dynamicModel, double deltaT, double t0)
 : system(std::move(dynamicModel)),
   timeStep(deltaT),
   t(t0),
-  targeType(TargetType::DynamicModel),
+  targetType(TargetType::DynamicModel),
   currentState(dynamicModel.getState())
 {   
 }
 
 
-//Advance position to next timestep
-void advancePosition() //changes currentPosition
+//Advance state to next timestep
+void Target::advanceState() //changes currentState
 {
     switch(targetType)
     {
         case TargetType::Function:
             t += timeStep; 
-            statePosition = stateFunction(t);
+            currentState = stateFunction(t);
             break; 
 
         case TargetType::Samples:
@@ -48,13 +48,13 @@ void advancePosition() //changes currentPosition
             break; 
 
         case TargetType::DynamicModel:
-            system.transitionStep();
-            currentState = system.getState();
+            system -> transitionStep();
+            currentState = system -> getState();
             break; 
     }
 }
 
-Eigen::VectorXd getPosition() const
+Eigen::VectorXd Target::getState() const
 {
-    return currentPosition;
+    return currentState;
 }

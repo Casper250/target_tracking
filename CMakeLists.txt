@@ -12,6 +12,7 @@ add_executable(calculation
     src/Gaussian.cpp
     src/DynMod.cpp
     src/SenMod.cpp
+    src/Target.cpp
 )
 
 target_link_libraries(

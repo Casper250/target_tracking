@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <functional>
 #include <string>
 #include <Eigen/Dense>
@@ -16,23 +17,24 @@ class Target
 {
 public: 
 
-    using MotionFunction = std::function<Eigen::VectorXd(double t)>
+    using MotionFunction = std::function<Eigen::VectorXd(double)>;
 
     //One constructor for each case
     //Function : function position(t)
     Target(MotionFunction motionFunction, double deltaT, double t0 = 0.0);
 
-    //Samples : takes in csv formatted file with x, y coordinates (currently only 2D)
+    //Samples : takes in csv formatted file with x, y, x', y' coordinates (currently only 2D)
     Target(const std::string& filename, double deltaT, double t0 = 0.0); 
 
     //Dynamic Model. Assumes the first half of the states are position
     Target(DynMod dynamicModel, double deltaT, double to = 0.0);
 
 
-    //Advance position to next timestep
-    void advancePosition(); //changes currentPosition
+    //Advance state to next timestep
+    void advanceState(); //changes currentState
 
-    Eigen::VectorXd getPosition() const; 
+    Eigen::VectorXd getState() const; 
+
 
 private: 
     TargetType targetType; 
@@ -43,6 +45,5 @@ private:
     //Note these members are only "active" based on the targetType
     std::string filepath; 
     MotionFunction stateFunction;
-    DynMod system; 
-
+    std::optional<DynMod> system; 
 };
