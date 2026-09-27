@@ -13,6 +13,7 @@ add_executable(calculation
     src/DynMod.cpp
     src/SenMod.cpp
     src/Target.cpp
+    src/Kalmanfilter.cpp
 )
 
 target_link_libraries(

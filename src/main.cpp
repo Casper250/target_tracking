@@ -6,20 +6,23 @@
 #include "../tests/testDynMod.cpp"
 #include "../tests/testSenMod.cpp"
 #include "../tests/testTarget.cpp"
+#include "../tests/testKalmanfilter.cpp"
 
 int main()
 {    
-
      
      //testMahalanobis();
      //testLinearTransformation();
-     testSample();
+     //testSample();
      //testLinearSystem();
      //testNonLinearSystem();
      //testLinearSensor();
      //testNonLinearSensor();
-     testFunctionAdvanceMotion();
-     testDynModAdvanceMotion();
+     //testFunctionAdvanceMotion();
+     //testDynModAdvanceMotion();
+     testCV2d(); 
+
+     
 
      return 0;
 } 

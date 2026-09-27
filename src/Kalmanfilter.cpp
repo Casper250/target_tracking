@@ -1,6 +1,4 @@
-#include "DynMod.hpp"
-#include "SenMod.hpp"
-#include "Target.hpp"
+#include "Kalmanfilter.hpp"
 
 //we have dynmod, sensmod and true target.
 
@@ -11,15 +9,20 @@ void EKF_filtering (Target target, DynMod model, SenMod sensor, int steps, std::
     //Open csv file
     std::ofstream outFile; 
     outFile.open(filepath);
+    outFile << "x_hat_1,x_hat_2,x_hat_3,x_hat_4,"
+        << "x_1,x_2,x_3,x_4\n";
 
     //Initialize matrices
     Eigen::MatrixXd I = Eigen::MatrixXd::Identity(4, 4);
-    Eigen::MatrixXd = I; 
+    Eigen::MatrixXd P = I; 
 
+    Eigen::VectorXd x_hat(4); 
     Eigen::VectorXd x(4); 
-    x_hat << 0, 0, 0, 0; //initial state. Can also add start up scheme.
+    x_hat = model.getState();
 
     Eigen::VectorXd z(2); //The measurement
+    Eigen::VectorXd z_hat(2); //The predicted measurement
+
     Eigen::VectorXd nu(2); //The innovation
 
     Eigen::MatrixXd F(4, 4); 
@@ -54,18 +57,28 @@ void EKF_filtering (Target target, DynMod model, SenMod sensor, int steps, std::
         S = H*P*H.transpose() + R; 
 
         //posterior prediction
-        W = P*H.transpose()*s.inverse();
-        x = x + W*nu; 
+        W = P*H.transpose()*S.inverse();
+        x_hat = x_hat + W*nu; 
         P = (I - W*H)*P*(I-W*H).transpose() + W*R*W.transpose(); 
 
         //Write results to CSV file; 
         
-        outFile << x_hat.transpose() << ", " << target.getState().transpose() << ", \n";
+        for (int i = 0; i < 4; ++i)
+        {
+            outFile << x_hat(i) << ","; 
+        }
+
+        x = target.getState();
+        for (int i = 0; i < 3; ++i)
+        {
+            outFile << x(i) << ","; 
+        }
+        outFile << x(3) <<"\n";
         
         step ++; 
     }
 
-    outfile.close(); 
+    outFile.close(); 
 
 
 }

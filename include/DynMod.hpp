@@ -17,7 +17,6 @@ public:
     Eigen::MatrixXd getTransitionMatrix() const; 
     Eigen::VectorXd getState() const; 
     Eigen::VectorXd transitionFunction(const Eigen::VectorXd& x) const; 
-s
     void transitionStep(); //modifies the state x
 
     void setState(const Eigen::VectorXd& x); 
