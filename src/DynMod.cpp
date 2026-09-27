@@ -68,9 +68,21 @@ Eigen::MatrixXd DynMod::getTransitionMatrix() const
     return F(Eigen::VectorXd::Zero(x.size()));
 }
 
+Eigen::VectorXd DynMod::transitionFunction(const Eigen::VectorXd& x) const
+{
+    return f(x); 
+}
+
+
+
 Eigen::VectorXd DynMod::getState() const
 {
     return x;
+}
+
+void DynMod::setState(const Eigen::VectorXd& state)
+{
+    x = state; 
 }
 
 

@@ -90,6 +90,8 @@ void testSample()
     outFile.open("data/results.csv");
     int nSamples = 100; 
 
+    std::cout << "Generates points" << std::endl; 
+
     Eigen::VectorXd mean1(2);
     Eigen::MatrixXd cov1(2, 2);
     Eigen::VectorXd sample(2);

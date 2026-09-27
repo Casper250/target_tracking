@@ -17,6 +17,7 @@ public:
     Eigen::MatrixXd getNoiseCovariance() const;
     
     Eigen::VectorXd takeMeasurement(const Eigen::VectorXd& xk) const;
+    Eigen::VectorXd predictMeasurement(const Eigen::VectorXd& xk) const;
 
     SenMod(MeasureMod function, JacobianMeasureMod jacobianFunction, const Eigen::MatrixXd& noiseCovariance);
     SenMod(const Eigen::MatrixXd& modelMatrix, const Eigen::MatrixXd& noiseCovariance);

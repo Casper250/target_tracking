@@ -27,12 +27,41 @@ Gaussian Gaussian::linearTransformation(const Eigen::MatrixXd& L) const
 
 Eigen::VectorXd Gaussian::sample() const
 {
-    Eigen::LLT<Eigen::MatrixXd> llt(cov);
-    if (llt.info() != Eigen::Success)
+    if (cov.isZero(1e-9))
     {
-        throw std::runtime_error("Cholesky factorization of Covariance matrix failed. Not positive definite.");
+        return mean; 
     }
-    Eigen::MatrixXd L = llt.matrixL(); //This is the cholesky factor L such that cov = LL^T
+
+    //Check if symmetric
+    if (!cov.isApprox(cov.transpose(), 1e-9))
+    {
+        throw std::runtime_error(
+            "Covariance matrix is not symmetric.");
+    }
+
+    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> solver(cov);
+
+    //Check if diagonialization failed
+    if (solver.info() != Eigen::Success)
+    {
+        throw std::runtime_error("Diagonalization of covariance matrix failed.");
+    }
+
+
+    const Eigen::VectorXd& eigenvalues = solver.eigenvalues();
+    const Eigen::MatrixXd& eigenvectors = solver.eigenvectors();
+
+
+    //Check for positive semidefiniteness
+
+    for (int i = 0; i < eigenvalues.size(); ++i)
+    {
+        if (eigenvalues(i) < -1e-10)
+        {
+            throw std::runtime_error ("Covariance matrix not positive semidefinite.");
+        }
+    }
+
 
     //We create the sample by transforming from a uniform sample. This is just for fun :)
     //Should perhaps take uniform distritbution as input later
@@ -40,7 +69,7 @@ Eigen::VectorXd Gaussian::sample() const
     std::mt19937 generator(rd());
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
-    const double PI = 3.14159265; //can later to move to its own constant file
+    constexpr double PI = 3.14159265; 
     int n = mean.size();
 
     //Create an n-dimensional vector of independent standard normal distribution samples using Box-Muller.
@@ -63,6 +92,11 @@ Eigen::VectorXd Gaussian::sample() const
             x(i+1) = magnitude * std::sin(2 * PI * U2);
         }
     }
+
+    //Compute cov^(1/2) = V * sqrt(Lambda)
+    Eigen::VectorXd sqrtEigenvalues = eigenvalues.cwiseMax(0.0).cwiseSqrt(); //Replace every eigenvalue smaller than zero with zero and take square root
+    Eigen::MatrixXd L = eigenvectors * sqrtEigenvalues.asDiagonal(); 
+
 
     return mean + L*x;
 } 

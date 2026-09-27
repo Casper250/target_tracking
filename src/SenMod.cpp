@@ -44,6 +44,12 @@ Eigen::VectorXd SenMod::takeMeasurement(const Eigen::VectorXd& xk) const
     return h(xk) + noiseGaussian.sample();
 }
 
+Eigen::VectorXd SenMod::predictMeasurement(const Eigen::VectorXd& xk) const
+{
+    return h(xk);
+}
+
+
 //getter functions
 
 Eigen::MatrixXd SenMod::getMeasurementMatrix() const

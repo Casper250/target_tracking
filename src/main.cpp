@@ -13,12 +13,13 @@ int main()
      
      //testMahalanobis();
      //testLinearTransformation();
-     //testSample();
+     testSample();
      //testLinearSystem();
      //testNonLinearSystem();
      //testLinearSensor();
      //testNonLinearSensor();
      testFunctionAdvanceMotion();
+     testDynModAdvanceMotion();
 
      return 0;
 } 
